@@ -6,6 +6,7 @@ import (
 	"gin-project/dao/mysql"
 	"gin-project/dao/redis"
 	"gin-project/logger"
+	"gin-project/pkg/snowflake"
 	"gin-project/routes"
 	"gin-project/settings"
 	"log"
@@ -44,6 +45,13 @@ func main() {
 	defer redis.Close()
 	if err := redis.Init(settings.Conf.RedisConfig); err != nil {
 		fmt.Println("init redis failed")
+		return
+	}
+
+	// 初始化雪花id
+
+	if err := snowflake.Init(settings.Conf.StartTime, settings.Conf.MachinedID); err != nil {
+		fmt.Printf("init snowflake failed, err: %v", err)
 		return
 	}
 

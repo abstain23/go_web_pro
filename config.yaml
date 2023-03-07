@@ -2,6 +2,8 @@ name: 'web_ap'
 mode: 'dev'
 port: 9000
 version: '1.0.0'
+start_time: '2023-03-07'
+machined_id: 1
 
 log:
   level: 'debug'
