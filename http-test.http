@@ -1,0 +1,8 @@
+POST http://localhost:9000/register
+Content-Type: application/json
+
+{
+  "username": "cc",
+  "password": "147258",
+  "re_password": ""
+}
