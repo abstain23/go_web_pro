@@ -2,7 +2,9 @@ POST http://localhost:9000/register
 Content-Type: application/json
 
 {
-  "username": "cc",
+  "username": "cc4",
   "password": "147258",
-  "re_password": "147258"
+  "re_password": "147258",
+  "email": "123456@qq.com",
+  "gender": "1"
 }
