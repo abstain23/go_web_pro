@@ -7,6 +7,7 @@ import (
 	"gin-project/dao/redis"
 	"gin-project/logger"
 	"gin-project/pkg/snowflake"
+	"gin-project/pkg/validator"
 	"gin-project/routes"
 	"gin-project/settings"
 	"log"
@@ -49,9 +50,14 @@ func main() {
 	}
 
 	// 初始化雪花id
-
 	if err := snowflake.Init(settings.Conf.StartTime, settings.Conf.MachinedID); err != nil {
 		fmt.Printf("init snowflake failed, err: %v", err)
+		return
+	}
+
+	// 初始化翻译器
+	if err := validator.InitTrans(settings.Conf.Lang); err != nil {
+		fmt.Printf("init validator trans failed, err: %v", err)
 		return
 	}
 
