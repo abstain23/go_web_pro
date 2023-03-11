@@ -30,7 +30,7 @@ func Register(params *models.ParamsRegister) (err error) {
 			Gender:     params.Gender,
 		},
 	}
-	mysql.InsertUser(user)
+	err = mysql.InsertUser(user)
 
 	return
 }

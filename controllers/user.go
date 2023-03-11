@@ -32,7 +32,13 @@ func RegisterHandler(c *gin.Context) {
 	}
 
 	// 2. 业务处理
-	logic.Register(p)
+	err := logic.Register(p)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
 
 	// 3. 返回响应
 	c.JSON(http.StatusOK, "ok")
