@@ -1,9 +1,14 @@
 package models
 
 type ParamsRegister struct {
-	Username   string `json:"username" binding:"required" db:"username"`
-	Password   string `json:"password" binding:"required" db:"password"`
-	RePassword string `json:"re_password" binding:"required,eqfield=Password" db:"password"`
-	Email      string `json:"email" binding:"required" db:"email"`
-	Gender     string `json:"gender" binding:"required" db:"gender"`
+	Username   string `json:"username" binding:"required,min=2"`
+	Password   string `json:"password" binding:"required"`
+	RePassword string `json:"re_password" binding:"required,eqfield=Password"`
+	Email      string `json:"email" binding:"required"`
+	Gender     string `json:"gender" binding:"required"`
+}
+
+type ParamsLogin struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }

@@ -21,16 +21,19 @@ func Register(params *models.ParamsRegister) (err error) {
 	uID := snowflake.GenID()
 	// 3. 保存进数据库
 	user := &models.User{
-		UserID: uID,
-		ParamsRegister: models.ParamsRegister{
-			Username:   params.Username,
-			Password:   params.Password,
-			RePassword: params.RePassword,
-			Email:      params.Email,
-			Gender:     params.Gender,
-		},
+		UserID:     uID,
+		Username:   params.Username,
+		Password:   params.Password,
+		RePassword: params.RePassword,
+		Email:      params.Email,
+		Gender:     params.Gender,
 	}
 	err = mysql.InsertUser(user)
 
+	return
+}
+
+func Login(params *models.ParamsLogin) (err error) {
+	err = mysql.Login(params)
 	return
 }

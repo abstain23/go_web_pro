@@ -43,3 +43,33 @@ func RegisterHandler(c *gin.Context) {
 	// 3. 返回响应
 	c.JSON(http.StatusOK, "ok")
 }
+
+func LoginHandler(c *gin.Context) {
+	p := new(models.ParamsLogin)
+
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("Login with invalid param", zap.Error(err))
+		errors, ok := err.(validator.ValidationErrors)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"msg": err.Error(),
+			})
+			return
+		}
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg": innerValidator.RemoveTopStruct(errors.Translate(innerValidator.Trans)),
+		})
+		return
+	}
+
+	err := logic.Login(p)
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, "ok")
+
+}
