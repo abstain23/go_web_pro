@@ -7,6 +7,10 @@ import (
 	"gin-project/pkg/snowflake"
 )
 
+var (
+	ErrorUserExist = errors.New("用户已经存在")
+)
+
 func Register(params *models.ParamsRegister) (err error) {
 	// 1. 判断用户存不存在
 	var exist bool
@@ -15,7 +19,7 @@ func Register(params *models.ParamsRegister) (err error) {
 		return err
 	}
 	if exist {
-		return errors.New("user exist")
+		return ErrorUserExist
 	}
 	// 2. 生成UID
 	uID := snowflake.GenID()

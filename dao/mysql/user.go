@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"errors"
-	"fmt"
 	"gin-project/models"
 )
 
@@ -28,7 +27,6 @@ func InsertUser(user *models.User) (err error) {
 	sqlStr := `insert into user(user_id, username, password, email, gender) values(?,?,?,?,?)`
 	_, err = db.Exec(sqlStr, user.UserID, user.Username, encryptPassword(user.Password), user.Email, user.Gender)
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
 		return err
 	}
 	return

@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"gin-project/constants"
 	"gin-project/logic"
 	"gin-project/models"
 	innerValidator "gin-project/pkg/validator"
-	"net/http"
+	"gin-project/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -19,14 +20,16 @@ func RegisterHandler(c *gin.Context) {
 		zap.L().Error("Register with invalid param", zap.Error(err))
 		errors, ok := err.(validator.ValidationErrors)
 		if !ok {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"msg": err.Error(),
-			})
+			utils.ResponseError(c, constants.CodeInvalidParam)
 			return
 		}
-		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": innerValidator.RemoveTopStruct(errors.Translate(innerValidator.Trans)),
-		})
+
+		utils.ResponseWithCustomMsg(
+			c,
+			constants.CodeInvalidParam,
+			innerValidator.RemoveTopStruct(errors.Translate(innerValidator.Trans)),
+			nil,
+		)
 		return
 
 	}
@@ -34,14 +37,12 @@ func RegisterHandler(c *gin.Context) {
 	// 2. 业务处理
 	err := logic.Register(p)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"msg": err.Error(),
-		})
+		utils.ResponseWithCustomMsg(c, constants.CodeServerBusy, err.Error(), nil)
 		return
 	}
 
 	// 3. 返回响应
-	c.JSON(http.StatusOK, "ok")
+	utils.ResponseSuccess(c, nil)
 }
 
 func LoginHandler(c *gin.Context) {
@@ -51,25 +52,25 @@ func LoginHandler(c *gin.Context) {
 		zap.L().Error("Login with invalid param", zap.Error(err))
 		errors, ok := err.(validator.ValidationErrors)
 		if !ok {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"msg": err.Error(),
-			})
+			utils.ResponseWithCustomMsg(c, constants.CodeInvalidParam, err.Error(), nil)
 			return
 		}
-		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": innerValidator.RemoveTopStruct(errors.Translate(innerValidator.Trans)),
-		})
+		utils.ResponseWithCustomMsg(
+			c,
+			constants.CodeInvalidParam,
+			innerValidator.RemoveTopStruct(errors.Translate(innerValidator.Trans)),
+			nil,
+		)
 		return
 	}
 
 	err := logic.Login(p)
 
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"msg": err.Error(),
-		})
+		utils.ResponseWithCustomMsg(c, constants.CodeServerBusy, err.Error(), nil)
 		return
 	}
-	c.JSON(http.StatusOK, "ok")
+
+	utils.ResponseSuccess(c, nil)
 
 }
