@@ -3,6 +3,7 @@ package routes
 import (
 	"gin-project/controllers"
 	"gin-project/logger"
+	"gin-project/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,8 +22,17 @@ func Setup(mode string) *gin.Engine {
 	// 登录
 	r.POST("/login", controllers.LoginHandler)
 
-	r.GET("/ping", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "【pong】")
+	r.GET("/ping", middleware.JWTAuthMiddleware(), func(ctx *gin.Context) {
+		username := ctx.GetString("username")
+		ctx.JSON(http.StatusOK, gin.H{
+			"data":     "【pong】",
+			"username": username,
+		})
+	})
+	r.NoRoute(func(ctx *gin.Context) {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"msg": "404 not found",
+		})
 	})
 	return r
 }

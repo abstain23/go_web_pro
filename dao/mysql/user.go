@@ -32,14 +32,11 @@ func InsertUser(user *models.User) (err error) {
 	return
 }
 
-func Login(user *models.ParamsLogin) (err error) {
+func Login(user *models.User) (err error) {
 	oldPasswd := user.Password
-	sqlUser := &models.User{
-		Username: user.Username,
-		Password: user.Password,
-	}
+
 	sqlStr := `select user_id, username, password from user where username=?`
-	err = db.Get(sqlUser, sqlStr, user.Username)
+	err = db.Get(user, sqlStr, user.Username)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return errors.New("用户不存在")
@@ -47,7 +44,7 @@ func Login(user *models.ParamsLogin) (err error) {
 		return err
 	}
 
-	if encryptPassword(oldPasswd) != sqlUser.Password {
+	if encryptPassword(oldPasswd) != user.Password {
 		return errors.New("用户名或者密码不匹配")
 	}
 

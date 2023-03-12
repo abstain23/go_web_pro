@@ -64,13 +64,15 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	err := logic.Login(p)
+	tokenString, err := logic.Login(p)
 
 	if err != nil {
 		utils.ResponseWithCustomMsg(c, constants.CodeServerBusy, err.Error(), nil)
 		return
 	}
 
-	utils.ResponseSuccess(c, nil)
+	utils.ResponseSuccess(c, gin.H{
+		"token": tokenString,
+	})
 
 }

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gin-project/dao/mysql"
 	"gin-project/models"
+	"gin-project/pkg/jwt"
 	"gin-project/pkg/snowflake"
 )
 
@@ -37,7 +38,16 @@ func Register(params *models.ParamsRegister) (err error) {
 	return
 }
 
-func Login(params *models.ParamsLogin) (err error) {
-	err = mysql.Login(params)
-	return
+func Login(params *models.ParamsLogin) (tokenString string, err error) {
+	user := &models.User{
+		Username: params.Username,
+		Password: params.Password,
+	}
+	err = mysql.Login(user)
+	if err != nil {
+		return "", err
+	}
+	// 生成token
+	return jwt.GenToken(user.UserID, params.Username)
+
 }

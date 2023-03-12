@@ -8,6 +8,8 @@ const (
 	CodeUserExist
 	CodeUserNotExist
 	CodeInvalidPassword
+	CodeEmptyToken
+	CodeInvalidToken
 	CodeServerBusy
 )
 
@@ -19,5 +21,7 @@ var CodMsgMap = map[ResCode]string{
 	CodeUserExist:       "用户已存在",
 	CodeUserNotExist:    "用户不存在",
 	CodeInvalidPassword: "用户名或者密码错误",
+	CodeEmptyToken:      "token为空",
+	CodeInvalidToken:    "token有误",
 	CodeServerBusy:      "服务繁忙",
 }

@@ -17,3 +17,8 @@ Content-Type: application/json
   "username": "cc4",
   "password": "147258"
 }
+
+###
+GET http://localhost:9000/ping
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNjNCIsInVzZXJfaWQiOjYwMjAzMjMxNDUxOTU1MiwiaXNzIjoiY2MiLCJleHAiOjE2Nzg2MDg3NjF9.aVxe61kxIBZj-kCvEuEjhoFbSwey85ANKrhCuYoUZCs
