@@ -16,11 +16,19 @@ func Setup(mode string) *gin.Engine {
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
+	v1 := r.Group("/api/v1")
+
 	// 注册
-	r.POST("/register", controllers.RegisterHandler)
+	v1.POST("/register", controllers.RegisterHandler)
 
 	// 登录
-	r.POST("/login", controllers.LoginHandler)
+	v1.POST("/login", controllers.LoginHandler)
+
+	v1.Use(middleware.JWTAuthMiddleware())
+
+	{
+		v1.GET("/community", controllers.CommunityListHandler)
+	}
 
 	r.GET("/ping", middleware.JWTAuthMiddleware(), func(ctx *gin.Context) {
 		username := ctx.GetString("username")
