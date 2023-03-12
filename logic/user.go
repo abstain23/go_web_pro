@@ -38,14 +38,14 @@ func Register(params *models.ParamsRegister) (err error) {
 	return
 }
 
-func Login(params *models.ParamsLogin) (tokenString string, err error) {
+func Login(params *models.ParamsLogin) (tokenString, rTokenString string, err error) {
 	user := &models.User{
 		Username: params.Username,
 		Password: params.Password,
 	}
 	err = mysql.Login(user)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	// 生成token
 	return jwt.GenToken(user.UserID, params.Username)

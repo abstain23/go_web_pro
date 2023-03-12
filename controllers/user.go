@@ -64,7 +64,7 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	tokenString, err := logic.Login(p)
+	tokenString, rTokenString, err := logic.Login(p)
 
 	if err != nil {
 		utils.ResponseWithCustomMsg(c, constants.CodeServerBusy, err.Error(), nil)
@@ -72,7 +72,8 @@ func LoginHandler(c *gin.Context) {
 	}
 
 	utils.ResponseSuccess(c, gin.H{
-		"token": tokenString,
+		"token":         tokenString,
+		"refresh_token": rTokenString,
 	})
 
 }

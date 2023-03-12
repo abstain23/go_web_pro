@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const ContextUserIDKey = "userID"
+
 func JWTAuthMiddleware() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
@@ -29,12 +31,12 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		mc, err := jwt.ParseToken(parts[1])
 
 		if err != nil {
-			utils.ResponseError(c, constants.CodeInvalidToken)
+			utils.ResponseWithCustomMsg(c, constants.CodeInvalidToken, err.Error(), nil)
 			c.Abort()
 			return
 		}
 
-		c.Set("username", mc.Username)
+		c.Set(ContextUserIDKey, mc.UserID)
 		c.Next()
 	}
 }
