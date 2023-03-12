@@ -25,7 +25,7 @@ func Setup(mode string) *gin.Engine {
 	r.GET("/ping", middleware.JWTAuthMiddleware(), func(ctx *gin.Context) {
 		username := ctx.GetString("username")
 		ctx.JSON(http.StatusOK, gin.H{
-			"data":     "【pong】",
+			"data":     "【ping】【pong】~~",
 			"username": username,
 		})
 	})
