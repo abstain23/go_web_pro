@@ -29,6 +29,9 @@ func Setup(mode string) *gin.Engine {
 	{
 		v1.GET("/community", controllers.CommunityListHandler)
 		v1.GET("/community/:id", controllers.CommunityDetailHandler)
+		v1.POST("/community", controllers.CreatePostHandler)
+
+		v1.POST("/post", controllers.CreatePostHandler)
 	}
 
 	r.GET("/ping", middleware.JWTAuthMiddleware(), func(ctx *gin.Context) {
