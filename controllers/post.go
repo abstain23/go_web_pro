@@ -6,6 +6,7 @@ import (
 	"gin-project/logic"
 	"gin-project/models"
 	"gin-project/utils"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,6 +27,8 @@ func CreatePostHandler(c *gin.Context) {
 		return
 	}
 
+	fmt.Printf("userID: %v\n", userID)
+
 	p.AuthorID = userID
 
 	err = logic.CreatePost(p)
@@ -36,4 +39,21 @@ func CreatePostHandler(c *gin.Context) {
 	}
 
 	utils.ResponseSuccess(c, nil)
+}
+
+func GetPostDetailHandler(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		utils.ResponseError(c, constants.CodeInvalidParam)
+		return
+	}
+
+	data, err := logic.GetPostDetailById(id)
+
+	if err != nil {
+		utils.ResponseError(c, constants.CodeServerBusy)
+		return
+	}
+	utils.ResponseSuccess(c, data)
 }

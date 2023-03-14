@@ -52,6 +52,18 @@ func Login(user *models.User) (err error) {
 
 }
 
+func GetUserById(id int64) (user *models.User, err error) {
+	sqlStr := `select username from user where user_id = ?`
+	user = new(models.User)
+
+	if err = db.Get(user, sqlStr, id); err != nil {
+		if err == sql.ErrNoRows {
+			err = errors.New("无效的User Id")
+		}
+	}
+	return
+}
+
 func encryptPassword(pwd string) string {
 	h := md5.New()
 	h.Write([]byte("go-project")) // secret
