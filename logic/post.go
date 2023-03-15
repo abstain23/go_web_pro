@@ -43,3 +43,26 @@ func GetPostDetailById(id int64) (data *models.ApiPostDetail, err error) {
 	data.AuthorName = user.Username
 	return
 }
+
+func GetPostList(page, size int64) (data []*models.ApiPostDetail, total int64, err error) {
+
+	posts, err := mysql.GetPostList(page, size)
+
+	data = make([]*models.ApiPostDetail, 0, len(posts))
+
+	for _, post := range posts {
+		postDetail, err := GetPostDetailById(post.ID)
+		if err != nil {
+			return data, total, err
+		}
+		data = append(data, postDetail)
+	}
+
+	total = mysql.GetPostCount()
+
+	if err != nil {
+		return data, total, err
+	}
+
+	return
+}

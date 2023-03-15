@@ -30,3 +30,29 @@ func GetPostById(id int64) (data *models.Post, err error) {
 	fmt.Printf("err: %v\n", err)
 	return
 }
+
+func GetPostList(page, size int64) (posts []*models.Post, err error) {
+
+	sqlStr := `select post_id, author_id, community_id, status, title, content, create_time
+	from post limit ? offset ?`
+
+	posts = make([]*models.Post, 0, 2)
+
+	err = db.Select(&posts, sqlStr, size, (page-1)*size)
+
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+
+	return
+}
+
+func GetPostCount() (count int64) {
+	sqlStr := `select count(*) from post`
+
+	db.Get(&count, sqlStr)
+
+	return
+
+}

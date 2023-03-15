@@ -37,15 +37,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNjN
 ###
 POST  http://localhost:9000/api/v1/post
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNjNCIsInVzZXJfaWQiOjYwMjAzMjMxNDUxOTU1MiwiaXNzIjoiY2MiLCJleHAiOjE2Nzg4MDY3MTN9.lkcke-tG9V5y7Z7BHJ8EE5vRZZPPGPedvHIt-wfUfn4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNjNCIsInVzZXJfaWQiOjYwMjAzMjMxNDUxOTU1MiwiaXNzIjoiY2MiLCJleHAiOjE2Nzg4OTg3Mjl9.detdc9KbyGUsI-Km1hivKI3hN2AqwwyHvvPKMjhz4KQ
 
 {
-  "community_id": 2,
-  "title": "learn go4",
-  "content": "how to learn go4"
+  "community_id": 3,
+  "title": "learn js2",
+  "content": "javascript is very2 ~~~"
 }
 
 
 ###
 GET http://localhost:9000/api/v1/post/2736095758389248
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODEzOTA3NzF9.4jx2i-s-Bz7ybcpzTpq0DTS-JjdiwaTQLyX8_lEPhQA
+
+###
+GET http://localhost:9000/api/v1/posts?page=1&size=10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNjNCIsInVzZXJfaWQiOjYwMjAzMjMxNDUxOTU1MiwiaXNzIjoiY2MiLCJleHAiOjE2Nzg4OTg3Mjl9.detdc9KbyGUsI-Km1hivKI3hN2AqwwyHvvPKMjhz4KQ
+

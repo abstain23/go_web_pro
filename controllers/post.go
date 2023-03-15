@@ -57,3 +57,36 @@ func GetPostDetailHandler(c *gin.Context) {
 	}
 	utils.ResponseSuccess(c, data)
 }
+
+func GetPostListHandler(c *gin.Context) {
+
+	var (
+		page, size int64
+	)
+
+	pageStr := c.Query("page")
+	sizeStr := c.Query("size")
+
+	page, err := strconv.ParseInt(pageStr, 10, 0)
+	if err != nil {
+		page = 1
+	}
+
+	size, err = strconv.ParseInt(sizeStr, 10, 0)
+
+	if err != nil {
+		size = 10
+	}
+
+	data, total, err := logic.GetPostList(page, size)
+
+	if err != nil {
+		utils.ResponseError(c, constants.CodeServerBusy)
+		return
+	}
+
+	utils.ResponseSuccess(c, gin.H{
+		"list":  data,
+		"total": total,
+	})
+}
