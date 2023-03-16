@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Community struct {
-	ID   int64  `json:"community_id" db:"community_id"`
+	ID   int64  `json:"community_id,string" db:"community_id"`
 	Name string `json:"community_name" db:"community_name"`
 }
 
