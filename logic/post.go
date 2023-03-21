@@ -3,6 +3,7 @@ package logic
 import (
 	"fmt"
 	"gin-project/dao/mysql"
+	"gin-project/dao/redis"
 	"gin-project/models"
 	"gin-project/pkg/snowflake"
 )
@@ -10,7 +11,13 @@ import (
 func CreatePost(post *models.Post) (err error) {
 
 	post.ID = snowflake.GenID()
-	return mysql.CreatePost(post)
+	err = mysql.CreatePost(post)
+	if err != nil {
+		return err
+	}
+
+	err = redis.CreatePost(post.ID)
+	return
 }
 
 func GetPostDetailById(id int64) (data *models.ApiPostDetail, err error) {

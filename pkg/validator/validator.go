@@ -25,7 +25,12 @@ func InitTrans(lang string) (err error) {
 			if name == "-" {
 				return ""
 			}
-			return name
+			if !strings.Contains(name, ",") {
+				return name
+			}
+
+			return strings.Split(name, ",")[0]
+
 		})
 
 		v.RegisterStructValidation(SignUpParamStructLevelValidation, models.ParamsRegister{})

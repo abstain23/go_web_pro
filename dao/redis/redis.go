@@ -9,9 +9,9 @@ import (
 )
 
 var rdb *redis.Client
+var ctx = context.Background()
 
 func Init(conf *settings.RedisConfig) (err error) {
-	ctx := context.Background()
 
 	rdb = redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", conf.Host, conf.Port),
