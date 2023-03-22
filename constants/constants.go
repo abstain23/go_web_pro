@@ -28,3 +28,8 @@ var CodMsgMap = map[ResCode]string{
 	CodeServerBusy:         "服务繁忙",
 	CodeInvalidCommunityID: "不合法的CommunityID",
 }
+
+const (
+	OrderByTime  = "time"
+	OrderByScore = "score"
+)

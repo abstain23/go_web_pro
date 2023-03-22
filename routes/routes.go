@@ -17,6 +17,7 @@ func Setup(mode string) *gin.Engine {
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
 	v1 := r.Group("/api/v1")
+	v2 := r.Group("/api/v2")
 
 	// 注册
 	v1.POST("/register", controllers.RegisterHandler)
@@ -36,6 +37,12 @@ func Setup(mode string) *gin.Engine {
 		v1.GET("/posts", controllers.GetPostListHandler)
 
 		v1.POST("/vote", controllers.PostVoteHandler)
+	}
+
+	v2.Use(middleware.JWTAuthMiddleware())
+
+	{
+		v2.POST("/posts", controllers.GetPostListHandlerV2)
 	}
 
 	r.GET("/ping", middleware.JWTAuthMiddleware(), func(ctx *gin.Context) {

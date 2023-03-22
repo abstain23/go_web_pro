@@ -5,6 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"gin-project/models"
+	"strings"
+
+	"github.com/jmoiron/sqlx"
 )
 
 func CreatePost(post *models.Post) (err error) {
@@ -34,9 +37,11 @@ func GetPostById(id int64) (data *models.Post, err error) {
 func GetPostList(page, size int64) (posts []*models.Post, err error) {
 
 	sqlStr := `select post_id, author_id, community_id, status, title, content, create_time
-	from post limit ? offset ?`
+	from post
+	ORDER BY create_time
+	limit ? offset ?`
 
-	posts = make([]*models.Post, 0, 2)
+	posts = make([]*models.Post, 0, size)
 
 	err = db.Select(&posts, sqlStr, size, (page-1)*size)
 
@@ -55,4 +60,26 @@ func GetPostCount() (count int64) {
 
 	return
 
+}
+
+func GetPostListByIDs(IDs []string) (posts []*models.Post, err error) {
+	sqlStr := `select post_id, author_id, community_id, status, title, content, create_time
+	from post
+	where post_id in (?)
+	order by FIND_IN_SET(post_id, ?)
+	`
+
+	query, args, err := sqlx.In(sqlStr, IDs, strings.Join(IDs, ","))
+
+	if err != nil {
+		return
+	}
+
+	query = db.Rebind(query)
+
+	posts = make([]*models.Post, 0, len(IDs))
+
+	err = db.Select(&posts, query, args...)
+
+	return
 }

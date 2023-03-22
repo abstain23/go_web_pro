@@ -6,6 +6,8 @@ import (
 	"gin-project/dao/redis"
 	"gin-project/models"
 	"gin-project/pkg/snowflake"
+
+	"go.uber.org/zap"
 )
 
 func CreatePost(post *models.Post) (err error) {
@@ -54,6 +56,40 @@ func GetPostDetailById(id int64) (data *models.ApiPostDetail, err error) {
 func GetPostList(page, size int64) (data []*models.ApiPostDetail, total int64, err error) {
 
 	posts, err := mysql.GetPostList(page, size)
+
+	data = make([]*models.ApiPostDetail, 0, len(posts))
+
+	for _, post := range posts {
+		postDetail, err := GetPostDetailById(post.ID)
+		if err != nil {
+			return data, total, err
+		}
+		data = append(data, postDetail)
+	}
+
+	total = mysql.GetPostCount()
+
+	if err != nil {
+		return data, total, err
+	}
+
+	return
+}
+
+func GetPostListV2(p *models.ParamsPostList) (data []*models.ApiPostDetail, total int64, err error) {
+
+	postIds, err := redis.GetPostIDsInOrder(p)
+
+	if err != nil {
+		return
+	}
+
+	if len(postIds) == 0 {
+		zap.L().Warn("redis GetPostIDsInOrder success ids == 0")
+		return
+	}
+
+	posts, err := mysql.GetPostListByIDs(postIds)
 
 	data = make([]*models.ApiPostDetail, 0, len(posts))
 
