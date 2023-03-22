@@ -91,7 +91,19 @@ func GetPostListV2(p *models.ParamsPostList) (data []*models.ApiPostDetail, tota
 
 	posts, err := mysql.GetPostListByIDs(postIds)
 
+	if err != nil {
+		return
+	}
+
 	data = make([]*models.ApiPostDetail, 0, len(posts))
+
+	voteData, err := redis.GetPostVoteData(postIds)
+
+	fmt.Printf("voteData: %v\n", voteData)
+
+	if err != nil {
+		return
+	}
 
 	for _, post := range posts {
 		postDetail, err := GetPostDetailById(post.ID)

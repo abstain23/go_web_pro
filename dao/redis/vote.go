@@ -52,6 +52,12 @@ func VoteForPost(userID, postID string, direction float64) error {
 	keyPost := KetPostVotedZSetPrefix + postID
 	ov := rdb.ZScore(ctx, keyPost, userID).Val()
 	var op float64
+
+	if direction == ov {
+		zap.L().Warn("same value ==")
+		return nil
+	}
+
 	if direction > ov {
 		op = 1
 	} else {
